@@ -1,0 +1,115 @@
+<html>
+<style>
+  fieldset{
+      border: 1px solid ghostwhite;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px;
+  }
+
+  .form-error{
+      display: none;
+  }
+
+  input, select{
+      display: inline-block;
+      margin-right: 10px !important;
+  }
+  select{
+      margin-right: 5px !important;
+  }
+  #suggestions td, #suggestions th{
+      padding: 5px;
+      border-left: 1px solid ghostwhite;
+      border-bottom: 1px solid #d3d3d3;
+  }
+.datepicker{
+    width: 20%;
+}
+</style>
+<script src="/js/jquery.form-validator.min.js"></script>
+<table style="width: 100%;">
+  <tr>
+     <td style="width: 45%" valign="top">
+      <div id="form">
+      <form enctype="multipart/form-data" id="form-create-role" accept-charset="UTF-8"
+            action="<%= @action%>" method="POST"><input type="hidden">
+
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token -%>
+        <%= hidden_field_tag :task_id, @task.id -%>
+
+        <fieldset>
+       
+
+		<div class="form-group">
+			<label for="title">Title</label>
+			<input data-validation="required" type="text" id="title" name="title" class="form-control"  value="<%= @task.title%>">
+		</div>
+		
+		<div class="form-group">
+			<label for="description">Description</label>
+			<textarea type="text" id=description" name="description" class="form-control" rows="4" cols="50" > <%= @task.desc%> </textarea>
+		</div>	
+		
+		<div class="form-group">
+			<label for="assignee">Assignee</label>
+			<select data-validation="required" type="text" id=assignee" name="assignee_id" class="form-control">
+				<option> </option>
+				<% User.all.each do |s|%>
+				<option id="as_<%=s.id%>"  value="<%=s.id%>"><%=s.name%></option>
+				<% end %>
+			</select>
+		</div>	
+		
+		<div class="form-group">
+		    <label for="due_date">Due Date</label>
+		    <input type="text" id="due_date" name="due_date"
+		           class="datepicker form-control" data-validation="required" value="<%= (@task.due_date.strftime('%d-%b-%Y') rescue nil)%>">
+               </div>
+		
+		<div class="form-group">
+			<label for="status">Task Status</label>
+			<select data-validation="required" type="text" id="status_id" name="status_id" class="form-control"  value="1">
+				<% Status.all.each do |s|%>
+				<option id="st_<%=s.id%>" value="<%=s.id%>"><%=s.name%></option>
+				<% end %>
+			</select>
+		</div>		
+		
+         
+        </fieldset>
+
+        <div class="form-group actions-row" style="padding-right: 52%;">
+          <button type="button submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save </button>
+        </div>
+
+      </form>
+    </div>
+    </td>
+    
+</tr>
+</table>
+
+
+<script>
+   
+
+
+    $.validate({
+        onError : function(){
+
+        }
+    });
+
+    datepicker = jQuery('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        startDate: '-3y'
+    });
+    
+
+	jQuery(document).ready(function(){
+		$("#as_<%=@task.assignee_id%>").attr("selected", "selected")
+		$("#st_<%=@task.status_id%>").attr("selected", "selected")
+	})
+</script>
+</html>

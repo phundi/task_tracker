@@ -1,0 +1,7 @@
+<div class="display-details">
+  <h3><strong>Title</strong><%= @task.title%></h3>
+  <p><strong>Description</strong><%=@task.desc%></p>
+  <p><strong>Assignee</strong><%=User.find(@task.assignee_id).name%></p>
+  <p><strong>Due Date</strong><%=@task.due_date.strftime('%d-%b-%Y')%></p>
+  <p><strong>Status</strong><%=Status.find(@task.status_id).name%></p>  
+</div>

@@ -1,0 +1,33 @@
+<html>
+<style>
+
+</style>
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a href="/task/index">Tasks</a></li>
+    <li><a class='active' href="/task/view?task_id=<%=@task.id%>">View Task</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-eye-open"></span>
+      <b>View Task</b>
+      <div class="panel-btn">
+        <a class="btn btn-sm btn-info" href="/task/edit?task_id=<%=@task.id%>">
+          <span class="glyphicon glyphicon-pencil"></span>
+          Edit
+        </a>
+        
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8" style="border-right: 1px solid lightblue;">
+            <%= render :partial => "task/task_card"%>
+          </div>
+        
+    </div>
+</div>
+</html>

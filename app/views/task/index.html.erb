@@ -1,0 +1,119 @@
+<html>
+<style>
+  .status{
+      color: #008000;
+  }
+  .disabled .status {
+      background-color: #d59392;
+      color: #000;
+  }
+
+  #tag, #example_filter{
+      font-size: 14px;
+      background:white;
+  }
+
+  #example_filter input{
+      margin-bottom: 10px;
+  }
+
+  
+  #example_wrapper{
+   width: 95%;
+  }
+</style>
+
+<div>
+  <ol class="breadcrumb " style="margin: 3px; padding: 5px;">
+    <li><a href="/">Home</a></li>
+    <li><a class='active' href="/task/index">Task</a></li>
+  </ol>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading ">
+      <span class="glyphicon glyphicon-user"></span>
+      <b>List Tasks</b>
+      <div class="panel-btn">
+        <a class="btn btn-sm btn-info" href="/task/new">
+          <span class="glyphicon glyphicon-plus-sign"></span>
+          Add Task
+        </a>
+      </div>
+    </div>
+    <div class="panel-body">
+
+        <table id="example"  class="data-table table table-condensed table-striped">
+            <thead>
+            <tr role="row">
+             <th  style="min-width: 25%;">Tile</th>
+             <th style="min-width: 30%;">Description</th>
+             <th style="min-width: 10%;">Assignee</th>
+            <th style="min-width: 10%;">Status</th>
+            <th style="min-width: 10%;">Due Date</th>
+              <th style="width:15%;">&nbsp;</th>
+            </tr>
+            </thead>
+        <tbody>
+        
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    table = null;
+
+    $(document).ready(function() {
+
+        table = $('.data-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            'pageLength': 10,
+            "ordering": false,
+            "ajax": {
+                "url": '/task/ajax_task',
+                data: function(d){
+
+                },
+                dataFilter: function (data) {
+                    var json = jQuery.parseJSON(data);
+                    console.log(json)
+                    for (var i = 0; i < json['data'].length; i++) {
+                        var last_index = json['data'][i].length - 1;
+                        var id = json['data'][i][last_index];
+
+                        json['data'][i][last_index] = '<a class="btn btn-sm btn-info" href="/task/edit?task_id=' + id + '">' +
+                                '<span class="glyphicon glyphicon-edit"></span> Edit</a>'
+
+                        json['data'][i][last_index] += '<a class="btn btn-sm btn-success" href="/task/view?task_id=' + id + '">' +
+                                '<span class="glyphicon glyphicon-eye-open"></span> Select </a>'
+                                
+                                
+                    }
+                    return JSON.stringify(json);
+                }
+            }
+        });
+
+        var holder = __$('example_filter');
+    })
+
+    function __$(id){
+        return document.getElementById(id);
+    }
+
+    function reloadDataTable(){
+        table.ajax.reload();
+    }
+
+   function deletes(link){
+       __$('modal').setAttribute('link', link)
+   }
+
+   function doDelete(){
+       window.location = __$('modal').getAttribute('link');
+   }
+   
+
+</script>
+</html>
