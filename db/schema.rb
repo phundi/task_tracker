@@ -50,10 +50,17 @@ ActiveRecord::Schema.define(version: 0) do
   end
   
   create_table "notification", primary_key: "notification_id", force: :cascade do |t|
-    t.integer   "user_id",                    limit: 255
+    t.integer   "user_id"
     t.integer   "seen",                      limit: 1, default: 0, null: false                    
     t.datetime  "status_id"
     t.text "notification",                  null: false
+    t.timestamp "created_at",                null: false
+  end
+  
+  create_table "comment", primary_key: "comment_id", force: :cascade do |t|
+    t.integer   "user_id"
+    t.integer   "task_id"                   
+    t.text "comment",                  null: false
     t.timestamp "created_at",                null: false
   end
   

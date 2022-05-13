@@ -42,7 +42,9 @@ Rails.application.routes.draw do
 
   get "task/edit"
   post "task/edit"
+  
+  get "task/add_comment"
+  post "task/add_comment"
 
   get "task/view"
-  get "task/task_suggestions"
 end

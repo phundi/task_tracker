@@ -27,7 +27,59 @@
           <div class="col-md-8" style="border-right: 1px solid lightblue;">
             <%= render :partial => "task/task_card"%>
           </div>
+          
+          
+          
+          
         
     </div>
+    
+    <div class="row">
+          <div class="col-md-8" style="border-right: 1px solid lightblue;">
+           
+           <%@comments.each do |comment|%>
+		  <div class="col-md-8" style="background: ghostwhite; color: black; font-size: 1.1em;padding: 10px; margin: 3px; border-radius: 20px;">
+		     <span> <%=comment.comment%> </span> 
+		     <span class="pull-right" style= "font-style: italic"> <%=User.find(comment.user_id).name + "  " + comment.created_at.to_date.strftime("%d-%b-%Y")%> </span>
+
+		  </div>
+           	
+           <% end %>
+           
+        
+            <textarea name="comments" class="pull-left" 
+           	 id="comment" cols="50" rows="5" style="margin-right: 10px;background-color: ghostwhite;border-radius: 2px;font-size: 1.2em;"> 
+            </textarea>
+         
+         
+         <a class="btn btn-sm btn-primary pull-left"  onclick="submitComment()">
+            
+          	<span class="glyphicon glyphicon-add"></span>
+          	Submit comment
+        </a>
+          </div>
+          
+
+        
+        
+
 </div>
+
+<script>
+
+	function submitComment(){
+		var comment = document.getElementById("comment").value
+		if (comment.length > 0){
+		
+			jQuery.ajax({
+				url: "/task/add_comment?comment=" + comment + "&task_id=<%=params[:task_id]%>",
+				success: function(result){
+
+					window.location = "/task/view?task_id=<%=params[:task_id]%>"					
+				}
+			})
+		}
+		
+	}
+</script>
 </html>

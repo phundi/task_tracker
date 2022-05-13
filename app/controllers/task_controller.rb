@@ -1,5 +1,6 @@
 class TaskController < ApplicationController
-
+  skip_before_action :verify_authenticity_atoken
+  
   def new
     @task = Task.new
     @action = "/task/new"
@@ -42,7 +43,8 @@ class TaskController < ApplicationController
   end
 
   def view
-    @task = Task.find(params[:task_id])    
+    @task = Task.find(params[:task_id])   
+    @comments = Comment.order("created_at DESC").where(task_id: params[:task_id])
   end 
 
   def ajax_task
@@ -81,6 +83,21 @@ class TaskController < ApplicationController
         "recordsTotal" => total,
         "recordsFiltered" => total,
         "data" => @records}.to_json and return
+  end
+  
+  def add_comment
+  
+  	if !params[:comment].blank?
+		comment = Comment.new
+		comment.user_id = @cur_user.id
+		comment.task_id = params[:task_id]
+		comment.comment = params[:comment]
+		comment.save
+		
+		render :text => "OK" and return
+  	end
+ 	 
+ 	 render :text => "Fail"
   end
 
 end

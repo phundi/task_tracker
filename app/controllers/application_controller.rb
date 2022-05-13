@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_filter :check_user, :except => ['logout', 'login']
 
+
+
   def check_user
      
     if params[:active_tab].present?
@@ -17,7 +19,7 @@ class ApplicationController < ActionController::Base
     end
     
     
-    @notifications = Notification.where(seen: 0, user_id: @cur_user.id)
+    @notifications = Notification.where(seen: 0, user_id: @cur_user.id) rescue []
     @notifications.each do |n|
       n.seen = 1
       n.save
